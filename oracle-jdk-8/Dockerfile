@@ -11,15 +11,15 @@ RUN set -eux; \
 
 ENV LANG en_US.UTF-8
 
-ENV JAVA_PKG=server-jre-8u341-linux-x64.tar.gz \
-	JAVA_SHA256=71c5ef1d73737e324b5aff491a0603f6a9698006132d788df11ea6883b5d3b1b \
+ENV JAVA_PKG=jdk-8u341-linux-x64.tar.gz \
+	JAVA_SHA256=c98e57cfc6ac9947d9aa9a31c5878d52e2bf764f8d90f20eec08f3c3fcaee0e7 \
 	JAVA_HOME=/usr/java/jdk-8
 
 COPY $JAVA_PKG /tmp/jdk.tgz
 RUN set -eux; \
 	echo "$JAVA_SHA256 */tmp/jdk.tgz" | sha256sum -c -; \
 	mkdir -p "$JAVA_HOME"; \
-	tar --extract --file /tmp/jdk.tgz --directory "$JAVA_HOME" --strip-components 1; 
+	tar --extract --file /tmp/jdk.tgz --directory "$JAVA_HOME" --strip-components 1;
 
 FROM oraclelinux:7-slim
 

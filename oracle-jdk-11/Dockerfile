@@ -1,28 +1,3 @@
-# Copyright (c) 2019, 2022 Oracle and/or its affiliates.
-#
-# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
-#
-# ORACLE DOCKERFILES PROJECT
-# --------------------------
-# This is the Dockerfile for Oracle JDK 11
-#
-# REQUIRED FILES TO BUILD THIS IMAGE
-# ----------------------------------
-#
-# (1) jdk-11.XX_linux-x64_bin.tar.gz or jdk-11.XX_linux-aarch64_bin.tar.gz
-#     Download from https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
-#
-# HOW TO BUILD THIS IMAGE
-# -----------------------
-# Put all downloaded files in the same directory as this Dockerfile
-# Run:
-#      $ docker build -t oracle/jdk:11 .
-#
-# This command is already scripted in build.sh so you can alternatively run
-#		$ bash build.sh
-#
-# The builder image will be used to uncompress the tar.gz file with the Java Runtime.
-
 FROM oraclelinux:7-slim as builder
 
 MAINTAINER Aurelio Garcia-Ribeyro <aurelio.garciaribeyro@oracle.com>
@@ -32,16 +7,10 @@ RUN set -eux; \
 		gzip \
 		tar;
 	
-# Default to UTF-8 file.encoding
 ENV LANG en_US.UTF-8
-
-
-# Environment variables for the builder image.
-# Required to validate that you are using the correct file
 
 ENV JAVA_HOME=/usr/java/jdk-11
 
-##
 COPY *.tar.gz /tmp/
 RUN set -eux; \
 	ARCH=$(uname -m) && \
@@ -57,10 +26,8 @@ RUN set -eux; \
 	mkdir -p "$JAVA_HOME"; \
 	tar --extract --file /tmp/jdk.tar.gz --directory "$JAVA_HOME" --strip-components 1
 	
-## Get a fresh version of SLIM for the final image	
 FROM oraclelinux:7-slim
 
-# Default to UTF-8 file.encoding
 ENV LANG en_US.UTF-8
 
 ENV JAVA_VERSION=11.0.16.1 \
@@ -68,15 +35,13 @@ ENV JAVA_VERSION=11.0.16.1 \
 
 ENV	PATH $JAVA_HOME/bin:$PATH	
 
-# Copy the uncompressed Java Runtime from the builder image
 COPY --from=builder $JAVA_HOME $JAVA_HOME
 
 RUN set -eux; \
-        ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone; \
-# Update the base image
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone; \
 	yum -y update; \
 	yum install -y \
-# JDK assumes freetype is available		
+# JDK assumes freetype is available
 		freetype fontconfig \
 	; \
 	rm -rf /var/cache/yum; \
@@ -87,7 +52,6 @@ RUN set -eux; \
 		[ ! -e "/usr/bin/$base" ]; \
 		alternatives --install "/usr/bin/$base" "$base" "$bin" 20000; \
 	done; \
-# -Xshare:dump will create a CDS archive to improve startup in subsequent runs	
-	java -Xshare:dump; 
+	java -Xshare:dump;
 
 CMD ["jshell"]
