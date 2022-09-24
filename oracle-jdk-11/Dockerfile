@@ -20,7 +20,7 @@ RUN set -eux; \
         JAVA_SHA256=4edc62ebb4359b276ea33abfd9a54bacb218b8f972603c20be9e415b8a59012c ; \
     else \
 	    mv $(ls /tmp/jdk-11*_linux-aarch64_bin.tar.gz) /tmp/jdk.tar.gz ; \
-    	JAVA_SHA256=546dca8e140abbcddbbb36f691817d81f7116b76e00e25ce2e0586bfee567f57 ; \    	
+    	JAVA_SHA256=546dca8e140abbcddbbb36f691817d81f7116b76e00e25ce2e0586bfee567f57 ; \
     fi && \
 	echo "$JAVA_SHA256 */tmp/jdk.tar.gz" | sha256sum -c -; \
 	mkdir -p "$JAVA_HOME"; \
@@ -41,7 +41,6 @@ RUN set -eux; \
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone; \
 	yum -y update; \
 	yum install -y \
-# JDK assumes freetype is available
 		freetype fontconfig \
 	; \
 	rm -rf /var/cache/yum; \

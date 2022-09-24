@@ -12,12 +12,11 @@ ENV JAVA_URL=https://download.oracle.com/java/17/latest \
 
 RUN set -eux; \
 	ARCH=$(uname -m) && \
-	# Java uses just x64 in the name of the tarball
     if [ "$ARCH" == "x86_64" ]; \
         then ARCH="x64"; \
     fi && \
     JAVA_PKG="$JAVA_URL/jdk-17_linux-${ARCH}_bin.tar.gz" ; \
-	JAVA_SHA256=$(curl "$JAVA_PKG".sha256) ; \ 
+	JAVA_SHA256=$(curl "$JAVA_PKG".sha256) ; \
 	curl --output /tmp/jdk.tgz "$JAVA_PKG" && \
 	echo "$JAVA_SHA256 */tmp/jdk.tgz" | sha256sum -c; \
 	mkdir -p "$JAVA_HOME"; \
@@ -32,10 +31,8 @@ ENV	PATH $JAVA_HOME/bin:$PATH
 COPY --from=builder $JAVA_HOME $JAVA_HOME
 
 RUN set -eux; \
-        ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone; \
-# Ensure we get the latest OL 8 updates available at build time
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone; \
 	dnf -y update; \
-# JDK assumes freetype is available	
 	dnf install -y \
 		freetype fontconfig \
 	; \
