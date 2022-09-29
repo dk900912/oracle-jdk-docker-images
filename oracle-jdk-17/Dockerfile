@@ -3,7 +3,7 @@ FROM oraclelinux:8 as builder
 MAINTAINER Aurelio Garcia-Ribeyro <aurelio.garciaribeyro@oracle.com>
 
 RUN set -eux; \
-	dnf install -y tar; 
+	dnf install -y tar;
 	
 ENV LANG en_US.UTF-8
 
@@ -26,7 +26,7 @@ FROM oraclelinux:8
 
 ENV LANG en_US.UTF-8
 ENV	JAVA_HOME=/usr/java/jdk-17
-ENV	PATH $JAVA_HOME/bin:$PATH	
+ENV	PATH $JAVA_HOME/bin:$PATH
 
 COPY --from=builder $JAVA_HOME $JAVA_HOME
 
@@ -36,6 +36,8 @@ RUN set -eux; \
 	dnf install -y \
 		freetype fontconfig \
 	; \
+    dnf install -y iputils; \
+    dnf install -y telnet; \
 	rm -rf /var/cache/dnf; \
 	ln -sfT "$JAVA_HOME" /usr/java/default; \
 	ln -sfT "$JAVA_HOME" /usr/java/latest; \

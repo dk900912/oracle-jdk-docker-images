@@ -1,6 +1,10 @@
 本仓库主要分享当前主流的 Oracle JDK LTS 版本的 Docker 镜像，即 JDK 8、JDK 11 和 JDK 17。主要参考了 [oracle/docker-images](https://github.com/oracle/docker-images) 官方镜像仓库，唯一改变是在原生`Dockerfile`基础上追加了以下指令：
 ```shell
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
+
+yum install -y iputils
+
+yum install -y telnet
 ```
 ### 1 镜像构建环境
 - 腾讯云轻量应用服务器 CPU: 2核 内存: 4GB
@@ -34,31 +38,24 @@ docker build -t oracle/jdk:17 .
 
 > 镜像信息一览
 > ```shell
-> [root@VM-16-10-centos ~]# docker images -a|grep oracle
-> oracle/jdk         17        6fb4d610fab0   23 hours ago     564MB
-> oracle/jdk         11        a2c8098a73ca   23 hours ago     447MB
-> oracle/serverjre   8         289e30b87cf2   45 hours ago     316MB
-> oraclelinux        8         5308c29a8a1f   7 days ago       229MB
-> oraclelinux        7-slim    6a34bf539669   4 weeks ago      133MB
+> [root@VM-16-10-centos ~]# docker images|grep oracle
+> oracle/jdk         17        2889d983c03d   4 minutes ago    565MB
+> oracle/jdk         11        2e7775ac36f4   5 minutes ago    543MB
+> oracle/jdk         8         077f95330196   7 minutes ago    632MB
+> oracle/serverjre   8         127cd9b40308   11 minutes ago   417MB
+> oraclelinux        8         5308c29a8a1f   2 weeks ago      229MB
+> oraclelinux        7-slim    6a34bf539669   5 weeks ago      133MB
 > ```
 
 > 容器信息一览
 > ```shell
-> [root@VM-16-10-centos ~]# docker run -it --name oracle-server-jre -d oracle/serverjre:8
+> [root@VM-16-10-centos ~]# docker run -it --name oracle-server-jre-8 -d oracle/serverjre:8
 > [root@VM-16-10-centos ~]# docker run -it --name oracle-jdk-8 -d oracle/jdk:8
 > [root@VM-16-10-centos ~]# docker run -it --name oracle-jdk-11 -d oracle/jdk:11
 > [root@VM-16-10-centos ~]# docker run -it --name oracle-jdk-17 -d oracle/jdk:17
 > 
-> 
-> [root@VM-16-10-centos ~]# docker ps
-> CONTAINER ID   IMAGE                COMMAND                CREATED         STATUS         PORTS                    NAMES
-> 644ed20474a6   oracle/jdk:8         "/bin/bash"            7 minutes ago   Up 7 minutes                            oracle-jdk-8
-> 42b5f6a68dfd   oracle/serverjre:8   "/bin/bash"            47 hours ago    Up 47 hours                             oracle-jre-8
-> 16b3563ae504   oracle/jdk:11        "jshell"               47 hours ago    Up 47 hours                             oracle-jdk-11
-> 12d2db0d7e29   oracle/jdk:17        "jshell"               47 hours ago    Up 47 hours                             oracle-jdk-17
-> 
-> 
-> [root@VM-16-10-centos ~]# docker exec -it oracle-jre-8 /bin/bash
+>
+> [root@VM-16-10-centos ~]# docker exec -it oracle-server-jre-8 /bin/bash
 > bash-4.2# java -version
 > java version "1.8.0_341"
 > Java(TM) SE Runtime Environment (build 1.8.0_341-b10)
@@ -88,25 +85,25 @@ docker build -t oracle/jdk:17 .
 ### 3 如何使用
 - JRE 8
 
-下载`oracle-jre-8.tar`，[传送门](https://pan.baidu.com/s/19IPPYUbHpawceFUTa2uXbw?pwd=r174)
+下载`oracle-jre-8.tar`，[传送门](https://pan.baidu.com/s/1tEg7Cs6m5KlMCUBpiPTMAQ?pwd=ara2)
 ```shell
 docker load -i oracle-jre-8.tar
 ```
 - JDK 8
 
-下载`oracle-jdk-8.tar`，[传送门](https://pan.baidu.com/s/1gV8dm6QNNmV1LhGSDhI2Hw?pwd=98f0)
+下载`oracle-jdk-8.tar`，[传送门](https://pan.baidu.com/s/1C4MT38ToLIKgyDTFfLkeaQ?pwd=31yd)
 ```shell
 docker load -i oracle-jdk-8.tar
 ```
 - JDK 11
 
-下载`oracle-jdk-11.tar`，[传送门](https://pan.baidu.com/s/1NFuNnxWqJDRPNuvOzyFBiA?pwd=sy9k)
+下载`oracle-jdk-11.tar`，[传送门](https://pan.baidu.com/s/19zFpq4meaFiRKObcjlPZyQ?pwd=1dmd)
 ```shell
 docker load -i oracle-jdk-11.tar
 ```
 - JDK 17
 
-下载`oracle-jdk-17.tar`，[传送门](https://pan.baidu.com/s/1VV_dV5_pcQ8BJ4ycd8iGlQ?pwd=idl1)
+下载`oracle-jdk-17.tar`，[传送门](https://pan.baidu.com/s/1ExsiTp91K8jJsUx8Gkg22A?pwd=fjob)
 ```shell
 docker load -i oracle-jdk-17.tar
 ```

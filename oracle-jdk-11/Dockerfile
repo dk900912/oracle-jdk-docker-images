@@ -43,6 +43,8 @@ RUN set -eux; \
 	yum install -y \
 		freetype fontconfig \
 	; \
+    yum install -y iputils; \
+    yum install -y telnet; \
 	rm -rf /var/cache/yum; \
 	ln -sfT "$JAVA_HOME" /usr/java/default; \
 	ln -sfT "$JAVA_HOME" /usr/java/latest; \

@@ -26,7 +26,7 @@ FROM oraclelinux:7-slim
 ENV LANG en_US.UTF-8
 
 ENV JAVA_VERSION=1.8.0_341 \
-	JAVA_HOME=/usr/java/jdk-8 
+	JAVA_HOME=/usr/java/jdk-8
 	
 ENV	PATH $JAVA_HOME/bin:$PATH
 
@@ -34,6 +34,8 @@ COPY --from=builder $JAVA_HOME $JAVA_HOME
 
 RUN	ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone; \
     yum -y update; \
+    yum install -y iputils; \
+    yum install -y telnet; \
 	rm -rf /var/cache/yum; \
 	ln -sfT "$JAVA_HOME" /usr/java/default; \
 	ln -sfT "$JAVA_HOME" /usr/java/latest; \
